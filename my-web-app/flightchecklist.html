@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Checklist</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Flight Checklist</h1>
+
+        <!-- Login Form -->
+        <div id="login-form">
+            <h2>Login</h2>
+            <form>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required><br><br>
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required><br><br>
+                
+                <button type="button" onclick="login()">Login</button>
+            </form>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div id="tabs" style="display: none;">
+            <div class="tab-navigation">
+                <button class="tab-button active" onclick="showTab('user-info')">User Information</button>
+                <button class="tab-button" onclick="showTab('checklist')">Checklist</button>
+            </div>
+
+            <!-- User Information Tab -->
+            <div id="user-info" class="tab-content active">
+                <h2>User Information</h2>
+                <form id="user-info-form">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required><br><br>
+                    
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" required><br><br>
+                    
+                    <label for="flight-start-time">Flight Start Time:</label>
+                    <input type="time" id="flight-start-time" name="flight-start-time" required><br><br>
+                    
+                    <label for="place">Place:</label>
+                    <input type="text" id="place" name="place" required><br><br>
+                    
+                    <label for="total-flight-time">Total Flight Time:</label>
+                    <input type="text" id="total-flight-time" name="total-flight-time" required><br><br>
+                </form>
+            </div>
+
+            <!-- Checklist Tab -->
+            <div id="checklist" class="tab-content">
+                <h2>Checklist</h2>
+                <form id="checklist-form">
+                    <label><input type="checkbox" id="battery-checked"> Battery Checked</label><br><br>
+                    <label><input type="checkbox" id="propellers-checked"> Propellers Checked</label><br><br>
+                    <label><input type="checkbox" id="calibration-done"> Calibration Done</label><br><br>
+                    <label><input type="checkbox" id="firmware-updated"> Firmware Updated</label><br><br>
+                    <label><input type="checkbox" id="gps-locked"> GPS Locked</label><br><br>
+                </form>
+                <!-- Register Button in Checklist Tab -->
+                <button type="button" onclick="registerFlight()">Register</button>
+            </div>
+
+            <!-- Download Button -->
+            <button id="download-button" onclick="downloadData()">Download Data</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

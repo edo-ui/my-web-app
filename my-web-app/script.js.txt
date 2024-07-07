@@ -1,0 +1,134 @@
+// script.js
+
+// Admin credentials
+const adminEmail = "eaindrayoo.edo@gmail.com";
+const adminPassword = "AsahiDx";
+
+let loggedIn = false;
+
+// Function to handle login
+function login() {
+    let email = document.getElementById("email").value.trim();
+    let password = document.getElementById("password").value.trim();
+
+    if (email === adminEmail && password === adminPassword) {
+        loggedIn = true;
+        document.getElementById("login-form").style.display = "none";
+        document.getElementById("tabs").style.display = "block";
+        showTab('user-info'); // Show initial tab
+    } else {
+        alert("Invalid email or password.");
+    }
+}
+
+// Function to show tab content
+function showTab(tabName) {
+    if (!loggedIn) return;
+
+    // Hide all tab content and deactivate tab buttons
+    let tabs = document.getElementsByClassName("tab-content");
+    for (let tab of tabs) {
+        tab.classList.remove("active");
+    }
+    let tabButtons = document.getElementsByClassName("tab-button");
+    for (let button of tabButtons) {
+        button.classList.remove("active");
+    }
+
+    // Show the selected tab content and activate its button
+    document.getElementById(tabName).classList.add("active");
+    event.currentTarget.classList.add("active");
+}
+
+// Function to show success message popup
+function showSuccessMessage() {
+    alert("The data was registered successfully.");
+}
+
+// Function to register flight information
+function registerFlight() {
+    if (!loggedIn) return;
+
+    // Get user information from form
+    let name = document.getElementById("name").value.trim();
+    let date = document.getElementById("date").value.trim();
+    let startTime = document.getElementById("flight-start-time").value.trim();
+    let place = document.getElementById("place").value.trim();
+    let totalFlightTime = document.getElementById("total-flight-time").value.trim();
+
+    // Get checklist items
+    let batteryChecked = document.getElementById("battery-checked").checked;
+    let propellersChecked = document.getElementById("propellers-checked").checked;
+    let calibrationDone = document.getElementById("calibration-done").checked;
+    let firmwareUpdated = document.getElementById("firmware-updated").checked;
+    let gpsLocked = document.getElementById("gps-locked").checked;
+
+    // Validate user input
+    if (!name || !date || !startTime || !place || !totalFlightTime) {
+        alert("Please fill out all fields in User Information.");
+        return;
+    }
+
+    // Create flight object
+    let flight = {
+        name: name,
+        date: date,
+        startTime: startTime,
+        place: place,
+        totalFlightTime: totalFlightTime,
+        checklist: {
+            batteryChecked: batteryChecked,
+            propellersChecked: propellersChecked,
+            calibrationDone: calibrationDone,
+            firmwareUpdated: firmwareUpdated,
+            gpsLocked: gpsLocked
+        }
+    };
+
+    // Store flight entry
+    flightEntries.push(flight);
+
+    // Reset form after registration
+    document.getElementById("user-info-form").reset();
+    document.getElementById("checklist-form").reset();
+
+    // Show success message
+    showSuccessMessage();
+
+    // Optionally, you can log the flight entry
+    console.log("Flight registered successfully:", flight);
+}
+
+// Function to download flight data as CSV
+function downloadData() {
+    if (!loggedIn) return;
+
+    // Prepare CSV content
+    let csvContent = "data:text/csv;charset=utf-8,"
+        + "Name,Date,Flight Start Time,Place,Total Flight Time,"
+        + "Battery Checked,Propellers Checked,Calibration Done,Firmware Updated,GPS Locked\n";
+
+    flightEntries.forEach(function(entry){
+        let row = [
+            entry.name,
+            entry.date,
+            entry.startTime,
+            entry.place,
+            entry.totalFlightTime,
+            entry.checklist.batteryChecked ? "Yes" : "No",
+            entry.checklist.propellersChecked ? "Yes" : "No",
+            entry.checklist.calibrationDone ? "Yes" : "No",
+            entry.checklist.firmwareUpdated ? "Yes" : "No",
+            entry.checklist.gpsLocked ? "Yes" : "No"
+        ];
+        csvContent += row.join(",") + "\n";
+    });
+
+    // Create a download link and trigger click to download
+    let encodedUri = encodeURI(csvContent);
+    let link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "flightchecklist_data.csv");
+    document.body.appendChild(link);
+    link.click();
+}
